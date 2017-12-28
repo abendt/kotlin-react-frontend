@@ -1,6 +1,11 @@
 config.module.rules.push(
     {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: [
+            {loader: 'style-loader',
+             options: { singleton: true }},
+
+            {loader: 'css-loader'}
+        ]
     }
 );

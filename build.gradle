@@ -45,13 +45,18 @@ kotlinFrontend {
         dependency("react-dom", "^$react_version")
 
         // webpack loader dependencies
+        // https://webpack.js.org/loaders/css-loader/
         devDependency("css-loader")
+        // https://webpack.js.org/loaders/style-loader/
         devDependency("style-loader")
         // https://github.com/webpack-contrib/file-loader
         devDependency("file-loader")
 
-        devDependency("karma-es6-shim")
+        // karma test runner
         devDependency("karma")
+
+        // karma plugins
+        devDependency("karma-es6-shim")
         devDependency("karma-mocha-reporter")
     }
 
@@ -99,8 +104,4 @@ sourceSets {
     test {
         resources.srcDirs += "src/test/resources"
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.3.1'
 }
