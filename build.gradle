@@ -1,0 +1,106 @@
+buildscript {
+    ext.kotlin_version = '1.2.10'
+    ext.react_version = '16.2.0'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.26"
+
+    }
+}
+
+group = 'org.jetbrains.kotlin.example'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.frontend'
+apply plugin: 'kotlin-dce-js'
+
+repositories {
+    jcenter()
+    maven { url "https://kotlin.bintray.com/kotlin-js-wrappers/" }
+}
+
+dependencies {
+    compile "org.jetbrains:kotlin-react:${react_version}-pre.17-kotlin-1.2.0"
+    compile "org.jetbrains:kotlin-react-dom:${react_version}-pre.17-kotlin-1.2.0"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version" // for now only compile configuration is supported
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version" // for now only compile configuration is supported
+}
+
+kotlinFrontend {
+    downloadNodeJsVersion = "8.9.3"
+    sourceMaps = true
+
+    npm {
+        dependency("react", "^$react_version")
+        dependency("react-dom", "^$react_version")
+
+        // webpack loader dependencies
+        devDependency("css-loader")
+        devDependency("style-loader")
+        // https://github.com/webpack-contrib/file-loader
+        devDependency("file-loader")
+
+        devDependency("karma-es6-shim")
+        devDependency("karma")
+        devDependency("karma-mocha-reporter")
+    }
+
+    karma {
+        port = 9876
+        runnerPort = 9100
+        plugins = ["karma-mocha-reporter", "karma-es6-shim"]
+        reporters = ["mocha"]
+        frameworks = ["qunit", "es6-shim"] // for now only qunit works as intended
+    }
+
+    webpackBundle {
+        bundleName = "main"
+        contentPath = file('src/main/web')
+        port = 3000
+    }
+
+    define "PRODUCTION", false
+
+//    allBundles {
+//        /* set properties for all bundles */
+//    }
+}
+
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.outputFile = "$project.buildDir.path/js/${project.name}.js"
+    kotlinOptions.sourceMap = true
+    kotlinOptions.moduleKind = 'commonjs'
+    kotlinOptions.main = "call"
+}
+
+compileTestKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.outputFile = "$project.buildDir.path/js-tests/${project.name}-tests.js"
+    kotlinOptions.sourceMap = true
+    kotlinOptions.moduleKind = 'commonjs'
+    kotlinOptions.main = "call"
+}
+
+sourceSets {
+    main {
+        resources.srcDirs += "src/main/resources"
+    }
+    test {
+        resources.srcDirs += "src/test/resources"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.3.1'
+}
