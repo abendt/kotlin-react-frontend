@@ -58,12 +58,14 @@ kotlinFrontend {
         // karma plugins
         devDependency("karma-es6-shim")
         devDependency("karma-mocha-reporter")
+
+        devDependency("karma-chrome-launcher")
     }
 
     karma {
         port = 9876
         runnerPort = 9100
-        plugins = ["karma-mocha-reporter", "karma-es6-shim"]
+        plugins = ["karma-mocha-reporter", "karma-es6-shim", "karma-chrome-launcher"]
         reporters = ["mocha"]
         frameworks = ["qunit", "es6-shim"] // for now only qunit works as intended
     }
@@ -102,3 +104,16 @@ sourceSets {
         resources.srcDirs += "src/main/resources"
     }
 }
+
+project.afterEvaluate{
+    // https://github.com/Kotlin/kotlin-frontend-plugin/issues/33
+    tasks.getByPath('webpack-config').inputs.file("$buildFile")
+
+    tasks.matching { task -> task.name == "karma-run-single" }.all {
+        outputs.upToDateWhen { false }
+    }
+}
+
+
+
+
