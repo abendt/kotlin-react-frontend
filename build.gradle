@@ -1,10 +1,9 @@
 
 buildscript {
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.21'
     ext.react_version = '16.2.0'
 
     repositories {
-        mavenLocal()
         mavenCentral()
         jcenter()
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
@@ -21,7 +20,7 @@ version = '0.0.1-SNAPSHOT'
 
 apply plugin: 'kotlin2js'
 apply plugin: 'org.jetbrains.kotlin.frontend'
-apply plugin: 'kotlin-dce-js'
+// apply plugin: 'kotlin-dce-js'
 
 repositories {
     jcenter()
