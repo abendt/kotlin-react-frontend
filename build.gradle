@@ -1,8 +1,10 @@
+
 buildscript {
     ext.kotlin_version = '1.2.10'
     ext.react_version = '16.2.0'
 
     repositories {
+        mavenLocal()
         mavenCentral()
         jcenter()
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
@@ -10,8 +12,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.26"
-
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.27"
     }
 }
 
@@ -38,7 +39,6 @@ dependencies {
 
 kotlinFrontend {
     downloadNodeJsVersion = "8.9.3"
-    sourceMaps = true
 
     npm {
         dependency("react", "^$react_version")
@@ -65,9 +65,10 @@ kotlinFrontend {
     karma {
         port = 9876
         runnerPort = 9100
+        browsers = ["ChromeHeadless"]
         plugins = ["karma-mocha-reporter", "karma-es6-shim", "karma-chrome-launcher"]
         reporters = ["mocha"]
-        frameworks = ["qunit", "es6-shim"] // for now only qunit works as intended
+        frameworks = ["jasmine", "es6-shim"] // for now only qunit works as intended
     }
 
     webpackBundle {
@@ -76,7 +77,7 @@ kotlinFrontend {
         port = 3000
     }
 
-    define "PRODUCTION", false
+    define "PRODUCTION", true
 
 //    allBundles {
 //        /* set properties for all bundles */
@@ -87,6 +88,7 @@ compileKotlin2Js {
     kotlinOptions.metaInfo = true
     kotlinOptions.outputFile = "$project.buildDir.path/js/${project.name}.js"
     kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
     kotlinOptions.moduleKind = 'commonjs'
     kotlinOptions.main = "call"
 }
@@ -95,6 +97,7 @@ compileTestKotlin2Js {
     kotlinOptions.metaInfo = true
     kotlinOptions.outputFile = "$project.buildDir.path/js-tests/${project.name}-tests.js"
     kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
     kotlinOptions.moduleKind = 'commonjs'
     kotlinOptions.main = "call"
 }
@@ -106,8 +109,7 @@ sourceSets {
 }
 
 project.afterEvaluate{
-    // https://github.com/Kotlin/kotlin-frontend-plugin/issues/33
-    tasks.getByPath('webpack-config').inputs.file("$buildFile")
+    // tasks.getByPath('webpack-config').inputs.file("$buildFile")
 
     tasks.matching { task -> task.name == "karma-run-single" }.all {
         outputs.upToDateWhen { false }
