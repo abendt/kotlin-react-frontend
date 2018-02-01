@@ -20,7 +20,7 @@ version = '0.0.1-SNAPSHOT'
 
 apply plugin: 'kotlin2js'
 apply plugin: 'org.jetbrains.kotlin.frontend'
-// apply plugin: 'kotlin-dce-js'
+apply plugin: 'kotlin-dce-js'
 
 repositories {
     jcenter()
@@ -28,9 +28,6 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains:kotlin-react:${react_version}-pre.17-kotlin-1.2.0"
-    compile "org.jetbrains:kotlin-react-dom:${react_version}-pre.17-kotlin-1.2.0"
-
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version" // for now only compile configuration is supported
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version" // for now only compile configuration is supported
@@ -40,17 +37,6 @@ kotlinFrontend {
     downloadNodeJsVersion = "8.9.3"
 
     npm {
-        dependency("react", "^$react_version")
-        dependency("react-dom", "^$react_version")
-
-        // webpack loader dependencies
-        // https://webpack.js.org/loaders/css-loader/
-        devDependency("css-loader")
-        // https://webpack.js.org/loaders/style-loader/
-        devDependency("style-loader")
-        // https://github.com/webpack-contrib/file-loader
-        devDependency("file-loader")
-
         // karma test runner
         devDependency("karma")
 
