@@ -1,10 +1,15 @@
 if (defined.PRODUCTION) {
+    const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
     console.log("Production build is enabled!");
 
-    defined['process.env.NODE_ENV'] = JSON.stringify('production')
+    defined['process.env.NODE_ENV'] = JSON.stringify('production');
 
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        minimize: true
-    }));
+    config.mode = "production";
+
+    config.plugins.push(new webpack.DefinePlugin({
+                            'process.env.NODE_ENV': '"production"',
+                          }));
+
+    config.plugins.push(new UglifyJsPlugin());
 }

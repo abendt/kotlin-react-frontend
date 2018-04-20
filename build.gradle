@@ -1,7 +1,7 @@
 
 buildscript {
-    ext.kotlin_version = '1.2.21'
-    ext.react_version = '16.2.0-pre.19'
+    ext.kotlin_version = '1.2.40'
+    ext.react_version = '16.3.1-pre.27'
 
     repositories {
         mavenCentral()
@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.27"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.30"
     }
 }
 
@@ -20,7 +20,7 @@ version = '0.0.1-SNAPSHOT'
 
 apply plugin: 'kotlin2js'
 apply plugin: 'org.jetbrains.kotlin.frontend'
-// apply plugin: 'kotlin-dce-js'
+apply plugin: 'kotlin-dce-js'
 
 repositories {
     jcenter()
@@ -28,8 +28,8 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains:kotlin-react:${react_version}-kotlin-1.2.20"
-    compile "org.jetbrains:kotlin-react-dom:${react_version}-kotlin-1.2.20"
+    compile "org.jetbrains:kotlin-react:${react_version}-kotlin-1.2.30"
+    compile "org.jetbrains:kotlin-react-dom:${react_version}-kotlin-1.2.30"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version" // for now only compile configuration is supported
