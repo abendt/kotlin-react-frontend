@@ -1,7 +1,7 @@
 
 buildscript {
-    ext.kotlin_version = '1.2.40'
-    ext.react_version = '16.3.1-pre.27'
+    ext.kotlin_version = '1.2.41'
+    ext.react_version = '16.3.1-pre.28'
 
     repositories {
         mavenCentral()
@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.30"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.31"
     }
 }
 
